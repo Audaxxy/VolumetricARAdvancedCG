@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistanceToCamera: 0.5
-  MidAirIndicator: {fileID: 1527064403990174, guid: e5581564ca4d5f2479d5f1694371ef2f, type: 3}
+  MidAirIndicator: {fileID: 0}
   OnAnchorPositionConfirmed:
     m_PersistentCalls:
       m_Calls:
