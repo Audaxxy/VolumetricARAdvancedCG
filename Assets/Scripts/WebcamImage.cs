@@ -18,12 +18,13 @@ namespace ArtistUI
             wct = new WebCamTexture();
             myImage = GetComponent<RawImage>();
             myImage.texture = wct;
-        }
-
-        private void OnEnable()
-        {
             wct.Play();
         }
+
+        //private void OnEnable()
+        //{
+        //    wct.Play();
+        //}
 
         public void ScreenSnip(RawImage target)
         {
@@ -54,15 +55,20 @@ namespace ArtistUI
             target.texture = t;
         }
 
-        private void OnDisable()
-        {
-            wct.Stop();
-        }
-
-        private void OnDestroy()
+		//private void OnDisable()
+		//{
+		//    wct.Stop();
+		//}
+		private void Update()
+		{
+            Debug.Log(wct.requestedFPS);
+		}
+		private void OnDestroy()
         {
             Debug.Log("ON DESTROY!");
+            wct.Stop();
             Destroy(wct);
         }
+
     }
 }
