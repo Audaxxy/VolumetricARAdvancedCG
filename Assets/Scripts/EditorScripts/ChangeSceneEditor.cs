@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(ChangeSceneScript), true)]
+
 public class ChangeSceneEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -32,3 +33,4 @@ public class ChangeSceneEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif
