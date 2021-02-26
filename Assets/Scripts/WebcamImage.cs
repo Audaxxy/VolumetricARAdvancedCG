@@ -59,10 +59,7 @@ namespace ArtistUI
 		//{
 		//    wct.Stop();
 		//}
-		private void Update()
-		{
-            Debug.Log(wct.requestedFPS);
-		}
+
 		private void OnDestroy()
         {
             Debug.Log("ON DESTROY!");
