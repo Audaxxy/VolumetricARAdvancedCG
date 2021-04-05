@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using Valve.VR;
 
 public class TimelineController : MonoBehaviour
 {
@@ -15,40 +16,61 @@ public class TimelineController : MonoBehaviour
     private double videoCurrentTime;//Current time of volumetric video
     public double maxTime = 31;//Max time for volumetric video (alembic uses doubles)
     public float maxAudioTime = 31;//Max time for volumetric video (AudioSources use floats)
-    public bool isPaused = false;//Whether playback is paused or not
+    public bool isPaused = true;//Whether playback is paused or not
+
+    public bool hitPause = false;
+    public bool rewinding = false;
+    public bool fastForward = false;
+
+    public float timer = 0;
+    public float controlTime = 0.25f;
+    //public GameObject[] buttons;
+
+    //public SteamVR_Action_Boolean SphereOnOff;
+    // a reference to the hand
+    //public SteamVR_Input_Sources handType;
     
     void Update()
     {
-        //Set current times for audio and video every update
-        videoCurrentTime=controller.time;
+        timer += Time.deltaTime;
+        //current times for audio and video every update
+        videoCurrentTime = controller.time;
         audioCurrentTime = audioController.time;
     
         //If space is pressed while game is unpaused, pause audio and video
-        if (Input.GetKeyDown(KeyCode.Space) && isPaused==false)
+        //if(SteamVR_Input._default.inActions.leftTrigger.GetStateDown(SteamVR_Input_Sources.Any))
+        //{
+        //    Debug.Log("WTF");
+        //}
+        if (isPaused == false && hitPause == true)
         {
             audioController.Pause();
             controller.Pause();
-            isPaused = true;
+            hitPause = false;
+            //isPaused = true;
         }
 
         //If space is pressed while game is paused, unpause audio and video
-        else if (Input.GetKeyDown(KeyCode.Space)&&isPaused==true)
+        else if (isPaused == true && hitPause == true)
         {
             audioController.Play();
             controller.Resume();
-            isPaused = false;
+            hitPause = false;
+            //isPaused = false;
         }
 
         //If A is pressed, pause playback of audio and video and decrement time of each by 1.
-        if (Input.GetKeyDown(KeyCode.A)&&controller.time>=0)
+        if (rewinding == true && timer > controlTime && controller.time >= 0)
         {
             //Pause
+            Debug.Log("Rewind Time");
             audioController.Pause();
             controller.Pause();
             isPaused = true;
+            timer = 0;
            
             //Exception handling for negative audio timeline
-            if (audioCurrentTime - 1>= 0)
+            if (audioCurrentTime - 1 >= 0)
             {
                 //decrement audio time
                 audioController.time = audioCurrentTime - 1;
@@ -69,12 +91,13 @@ public class TimelineController : MonoBehaviour
         }
 
         //If D is pressed, pause playback of audio and video and increment time of each by 1.
-        if (Input.GetKeyDown(KeyCode.D)&&controller.time<=maxTime)
+        if (fastForward == true && timer > controlTime && controller.time<=maxTime)
         {
             //Unpause
             audioController.Pause();
             controller.Pause();
             isPaused = true;
+            timer = 0;
 
             //Exception handling for exceeding audio timeline
             if (audioCurrentTime + 1 <= maxAudioTime)
@@ -98,4 +121,11 @@ public class TimelineController : MonoBehaviour
         }
 
     }
+
+    public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+    {
+    //        Debug.Log("Trigger is down");
+    //        Sphere.GetComponent<MeshRenderer>().enabled = true;
+    }
+        //Set cu
 }

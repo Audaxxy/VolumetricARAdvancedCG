@@ -7,6 +7,7 @@ public class MenuButtons : MonoBehaviour
 {
     public List<string> buttonNames;
     public string sceneName;
+    public GameObject playerRig;
 
     //When Button Top hits TriggerPlate do something based on Button name.
     void OnTriggerEnter(Collider col)
@@ -22,15 +23,9 @@ public class MenuButtons : MonoBehaviour
     }
     void ButtonOne()
     {
+        Destroy(playerRig);
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
-
-    void ButtonTwo()
-    {
-        
-    }
-
-    //etc
 
     void QuitButton(){
         Application.Quit();
